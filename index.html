@@ -1,1 +1,45 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #weather {
+            white-space: pre-line; /* Allows newlines in text */
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Checker</h1>
+    <p>Enter a city to get the current weather:</p>
+    <input type="text" id="city" placeholder="City name" />
+    <button onclick="getWeather()">Check Weather</button>
+
+    <div id="weather"></div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById("city").value;
+            const url = `https://wttr.in/${city}?format=%C+%t+%h+%w`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("City not found or API limit reached");
+
+                const weatherText = await response.text();
+                document.getElementById("weather").innerText = `Weather in ${city}:\n${weatherText}`;
+            } catch (error) {
+                document.getElementById("weather").innerText = error.message;
+            }
+        }
+    </script>
+</body>
+</html>
